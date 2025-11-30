@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import JSZip from "jszip";
+
 
 interface ImageItem {
   id: string;
@@ -266,25 +266,12 @@ export default function FaceCropPage() {
   const downloadAll = async () => {
     const needCrop = images.some((it) => !it.output);
     if (needCrop) await cropAll();
-
-    const zip = new JSZip();
-    for (const it of images) {
-      if (!it.output) continue;
-      try {
-        const res = await fetch(it.output);
-        const blob = await res.blob();
-        const name = it.file.name.replace(/\.[^.]+$/, "_cropped.jpg");
-        zip.file(name, blob);
-      } catch (err) {
-        console.error("Failed to add to zip", err);
-      }
+    for (const img of images) {
+      const a = document.createElement("a");
+      a.href = img.output!;
+      a.download = img.file.name.replace(/\.[^.]+$/, "_cropped.jpg");
+      a.click();
     }
-
-    const content = await zip.generateAsync({ type: "blob" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(content);
-    a.download = `cropped_images_${Date.now()}.zip`;
-    a.click();
   };
 
   return (
@@ -325,7 +312,7 @@ export default function FaceCropPage() {
               <SelectItem value="3:4">3 : 4</SelectItem>
               <SelectItem value="9:16">9 : 16</SelectItem>
               <SelectItem value="16:9">16 : 9</SelectItem>
-              
+
             </SelectContent>
           </Select>
         </div>
