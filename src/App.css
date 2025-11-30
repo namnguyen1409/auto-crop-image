@@ -1,0 +1,25 @@
+/* Basic loader used in FaceDetect previews */
+.loader {
+	width: 40px;
+	height: 40px;
+	border: 4px solid rgba(255,255,255,0.2);
+	border-top-color: #ffffff;
+	border-radius: 9999px;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	to { transform: rotate(360deg); }
+}
+
+/* shimmer skeleton (optional) */
+.skeleton {
+	background: linear-gradient(90deg, #f3f3f3 25%, #e8e8e8 37%, #f3f3f3 63%);
+	background-size: 400% 100%;
+	animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+	0% { background-position: 200% 0; }
+	100% { background-position: -200% 0; }
+}
